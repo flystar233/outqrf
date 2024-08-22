@@ -17,7 +17,6 @@ devtools::install_github("flystar233/outqrf")
 ## Usage
 We first generate a data set with about 5% outliers values in each numeric column.
 ```
-library(outqrf)
 #Generate data with outliers in numeric columns
 irisWithOutliers <- generateOutliers(iris, p = 0.05,seed =2024)
 # Find outliers by quantile random forest regressions
@@ -43,5 +42,32 @@ out$outliers
 # 17  66  Petal.Width   6.9828746       2.0 0.993
 # 18 113  Petal.Width  -6.0696862       1.5 0.001
 
-
 ```
+
+## Evaluation
+```
+irisWithOutliers <- outqrf::generateOutliers(iris, p = 0.1,seed =2024)
+qrf <- outqrf(irisWithOutliers)
+rf <- outForest(irisWithOutliers)
+qrf_out <- qrf$outliers
+rf_out <- rf$outliers
+qrf_num <- length(qrf_out)
+#18
+rf_num <- length(rf_out)
+#21
+boxplot_num <- 0
+# find outliers use boxplot 
+for (i in names(irisWithOutliers)[sapply(irisWithOutliers,is.numeric)]){
+  q1 <- quantile(irisWithOutliers[,i], 0.25)
+  q3 <- quantile(irisWithOutliers[,i], 0.75)
+  iqr <- q3 - q1
+  lower_bound <- q1 - 1.5 * iqr
+  upper_bound <- q3 + 1.5 * iqr
+  num <- sum(irisWithOutliers[,i]<lower_bound|irisWithOutliers[,i]>upper_bound)
+  boxplot_num<-boxplot_num+num
+}
+# 43
+```
+
+
+
