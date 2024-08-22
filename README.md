@@ -68,6 +68,8 @@ for (i in names(irisWithOutliers)[sapply(irisWithOutliers,is.numeric)]){
 }
 # 43
 ```
+![Rplot](https://github.com/user-attachments/assets/0a453eb9-3901-4c46-a4f4-ee86c386a701)
+
 
 
 
