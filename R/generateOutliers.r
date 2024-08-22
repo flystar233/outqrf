@@ -22,7 +22,7 @@ generateOutliers <- function(data, p = 0.5, sd_factor = 5, seed = NULL){
     for (features in numeric_features){
         n <- length(data[,features])
         m <- round(p * n)
-        data[sample(n,m),features] <- data[m,features] + sd_factor  * sample(c(-1, 1), m, replace = TRUE) * rnorm(m,sd(data[[features]]))
+        data[sample(n,m),features] <- round(data[m,features] + sd_factor  * sample(c(-1, 1), m, replace = TRUE) * rnorm(m,sd(data[[features]])),2)
     }
     return(data)
 }
