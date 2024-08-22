@@ -121,7 +121,7 @@ outqrf <-function(data,
                 }
         
         }
-        outlier <- data.frame(row = row.names(data),col = v,observed = response, predicted = median_values,rank = rank_value)
+        outlier <- data.frame(row = as.numeric(row.names(data)),col = v,observed = response, predicted = median_values,rank = rank_value)
         outlier<- outlier|>dplyr::filter(rank<=threshold_low| rank>=threshold_high)
         outliers <- rbind(outliers,outlier)
     }
