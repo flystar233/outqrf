@@ -71,6 +71,7 @@ outqrf <-function(data,
     threshold_high<-1-threshold
     rmse <-c()
     outliers <- data.frame()
+    outMatrixs <- list()
 
     if (verbose) {
     cat("\nOutlier identification by quantiles random forests\n")
@@ -93,6 +94,7 @@ outqrf <-function(data,
             ...)
         pred <- predict(qrf, data[,covariables], type = "quantiles",quantiles=quantiles)
         outMatrix <- pred$predictions
+        outMatrixs[[v]]<-outMatrix
         median_outMatrix <- outMatrix[,(length(quantiles)+1)/2]
 
         response<- data[,v]
@@ -132,7 +134,7 @@ outqrf <-function(data,
     n_outliers = table(outliers$col),
     threshold = threshold,
     rmse = rmse,
-    outMatrix =outMatrix
+    outMatrixs =outMatrixs
     )
 
 }
