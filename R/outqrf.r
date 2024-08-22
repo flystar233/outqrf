@@ -131,7 +131,8 @@ outqrf <-function(data,
     outliers = outliers,
     n_outliers = table(outliers$col),
     threshold = threshold,
-    rmse = rmse
+    rmse = rmse,
+    outMatrix =outMatrix
     )
 
 }
