@@ -78,7 +78,7 @@ outqrf <-function(data,
     cat("\n  Variables to check:\t\t")
     cat(numeric_features, sep = ", ")
     cat("\n  Variables used to check:\t")
-    cat(numeric_features, sep = ", ")
+    cat(names(data), sep = ", ")
     cat("\n\n  Checking: ")
     }
 
@@ -86,7 +86,7 @@ outqrf <-function(data,
         if (verbose) {
             cat(v, " ")
         }
-        covariables <- setdiff(numeric_features, v)
+        covariables <- setdiff(names(data), v)
         qrf <- ranger::ranger(
             formula = stats::reformulate(covariables, response = v),
             data = data,
