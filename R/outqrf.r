@@ -102,9 +102,7 @@ outqrf <-function(data,
         rmse_ <- sqrt(sum(diffs*diffs)/(length(diffs)-1))
         rmse <- c(rmse,rmse_)
         rank_value <-c()
-        median_values <-c()
         for (i in 1:length(response)){
-            median_values <- c(median_values,median_outMatrix[i])
             rank_<- find_max_index(outMatrix[i,],response[i])
             if (length(rank_)>1){
                 diff = response[i] -median_outMatrix[i]
@@ -123,7 +121,7 @@ outqrf <-function(data,
                 }
         
         }
-        outlier <- data.frame(row = as.numeric(row.names(data)),col = v,observed = response, predicted = median_values,rank = rank_value)
+        outlier <- data.frame(row = as.numeric(row.names(data)),col = v,observed = response, predicted = median_outMatrix,rank = rank_value)
         outlier<- outlier|>dplyr::filter(rank<=threshold_low| rank>=threshold_high)
         outliers <- rbind(outliers,outlier)
     }
