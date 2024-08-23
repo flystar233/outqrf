@@ -18,6 +18,7 @@ generateOutliers <- function(data, p = 0.5, sd_factor = 5, seed = NULL){
     } else {
     set.seed(seed)
     }
+    data<- as.data.frame(data)
     numeric_features <- names(data)[sapply(data,is.numeric)]
     for (features in numeric_features){
         n <- length(data[,features])
