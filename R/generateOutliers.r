@@ -8,8 +8,8 @@
 #' @returns data with some outliers.
 #' @export
 #' @examples
-#' generateOutliers(iris, p = 0.5, sd_factor = 5, seed = 123)
-generateOutliers <- function(data, p = 0.5, sd_factor = 5, seed = NULL){
+#' generateOutliers(iris, p = 0.05, sd_factor = 5, seed = 123)
+generateOutliers <- function(data, p = 0.05, sd_factor = 5, seed = NULL){
     if (p <= 0 || p > 1|| sd_factor <= 0) {
         stop("p and sd_factor must be between 0 and 1")
     }
