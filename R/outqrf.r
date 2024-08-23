@@ -29,7 +29,7 @@ get_quantily_value <- function(name){
 #' @examples
 #' find_max_index(c(1, 2, 3, 4, 5), 3.5)
 #' @export
-find_max_index <- function(x, y) {
+find_index <- function(x, y) {
     index <- which(x == y)
     if (length(index) >= 1) {
         index_name <- names(x)[index]
@@ -37,11 +37,47 @@ find_max_index <- function(x, y) {
         return(value)
     } 
     else {
-        closest_index <- which.min(abs(x - y))
+        closest_index <- which(abs(x - y) == min(abs(x-y)))
         closest_index_name <- names(x)[closest_index]
         value <- get_quantily_value(closest_index_name)
         return(value)
     }
+}
+
+#' @title find the right rank
+#' 
+#' @description
+#' This function finds the right rank of a response value in a quantile random forest.
+#' 
+#' @param response a vector of response values
+#' @param outMatrix a matrix of out values
+#' @param median_outMatrix a vector of median out values
+#' @param rmse_ a vector of rmse values
+#' 
+#' @return a vector of ranks
+#' 
+get_right_rank <- function(response,outMatrix,median_outMatrix,rmse_){
+    rank_value <-c()
+    for (i in 1:length(response)){
+        rank_<- find_index(outMatrix[i,],response[i])
+        if (length(rank_)>1){
+            diff = response[i] -median_outMatrix[i]
+            if (abs(diff)>3*rmse_ & diff<0 ){
+                min_value <- min(rank_)
+                rank_value<-c(rank_value,min_value)
+            } else if (abs(diff)>3*rmse_ & diff>0) {
+                max_value <- max(rank_)
+                rank_value<-c(rank_value,max_value)
+            }else {
+                mean_value <- mean(rank_)
+                rank_value<-c(rank_value,mean_value)
+            }       
+        }else {
+             rank_value<-c(rank_value,rank_)
+            }
+
+    }
+    return(rank_value)
 }
 
 #' @title find outliers
@@ -101,26 +137,7 @@ outqrf <-function(data,
         diffs = response - median_outMatrix
         rmse_ <- sqrt(sum(diffs*diffs)/(length(diffs)-1))
         rmse <- c(rmse,rmse_)
-        rank_value <-c()
-        for (i in 1:length(response)){
-            rank_<- find_max_index(outMatrix[i,],response[i])
-            if (length(rank_)>1){
-                diff = response[i] -median_outMatrix[i]
-                if (abs(diff)>3*rmse_ & diff<0 ){
-                    min_value <- min(rank_)
-                    rank_value<-c(rank_value,min_value)
-                } else if (abs(diff)>3*rmse_ & diff>0) {
-                    max_value <- max(rank_)
-                    rank_value<-c(rank_value,max_value)
-                }else {
-                    mean_value <- mean(rank_)
-                    rank_value<-c(rank_value,mean_value)
-                }       
-            }else {
-                rank_value<-c(rank_value,rank_)
-                }
-        
-        }
+        rank_value <- get_right_rank(response,outMatrix,median_outMatrix,rmse_)
         outlier <- data.frame(row = as.numeric(row.names(data)),col = v,observed = response, predicted = median_outMatrix,rank = rank_value)
         outlier<- outlier|>dplyr::filter(rank<=threshold_low| rank>=threshold_high)
         outliers <- rbind(outliers,outlier)

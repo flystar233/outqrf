@@ -4,7 +4,7 @@
 \alias{generateOutliers}
 \title{Adds Outliers}
 \usage{
-generateOutliers(data, p = 0.5, sd_factor = 5, seed = NULL)
+generateOutliers(data, p = 0.05, sd_factor = 5, seed = NULL)
 }
 \arguments{
 \item{data}{data.frame.}
@@ -24,5 +24,5 @@ data with some outliers.
 Adds Outliers
 }
 \examples{
-generateOutliers(iris, p = 0.5, sd_factor = 5, seed = 123)
+generateOutliers(iris, p = 0.05, sd_factor = 5, seed = 123)
 }
