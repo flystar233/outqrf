@@ -45,9 +45,10 @@ out$outliers
 
 ```
 
-## Evaluation
+## Evaluation on iris (Small Dataset)
 ```
 irisWithOutliers <- outqrf::generateOutliers(iris, p = 0.1,seed =2024)
+# 60
 qrf <- outqrf(irisWithOutliers)
 rf <- outForest(irisWithOutliers)
 qrf_out <- qrf$outliers
@@ -71,6 +72,17 @@ for (i in names(irisWithOutliers)[sapply(irisWithOutliers,is.numeric)]){
 ```
 ![Rplot](https://github.com/user-attachments/assets/0a453eb9-3901-4c46-a4f4-ee86c386a701)
 
-
-
+## Evaluation on diamonds (Big Dataset)
+```
+data <- diamonds|>select(price,carat,cut,color,clarity)
+data <- outqrf::generateOutliers(data, p = 0.002,seed =2024)
+# 214
+qrf <- outqrf(data,num.threads=8)
+# The process can be slow because it needs to predict the value at 1000 quantiles for each observation. 
+rf <- outForest(data)
+qrf_out <- qrf$outliers
+# 361
+rf_out <- rf$outliers
+# 486
+```
 
