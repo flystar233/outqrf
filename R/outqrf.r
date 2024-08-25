@@ -80,13 +80,18 @@ get_right_rank <- function(response,outMatrix,median_outMatrix,rmse_){
     return(rank_value)
 }
 
+find_quantile_position <- function(x, data) {
+    ecdf_data <- ecdf(data)
+    return(ecdf_data(x))
+}
+
 #' @title find outliers
 #' 
 #' @description
 #' This function finds outliers in a dataset using quantile random forests.
 #' 
 #' @param data a data frame
-#' @param quantiles a vector of quantiles
+#' @param quantiles_type 'all':seq(from = 0.001, to = 0.999, by = 0.001),'other':c(threshold,0.5,1-threshold)
 #' @param threshold a threshold for outlier detection
 #' @param verbose a boolean value indicating whether to print verbose output
 #' @param ... additional arguments passed to the ranger function
@@ -97,7 +102,7 @@ get_right_rank <- function(response,outMatrix,median_outMatrix,rmse_){
 #' outqrf(iris)
 #' @export
 outqrf <-function(data,
-                    quantiles=seq(from = 0.001, to = 0.999, by = 0.001),
+                    quantiles_type=1000,
                     threshold =0.025,
                     verbose = 1,
                     ...){
@@ -106,8 +111,17 @@ outqrf <-function(data,
     threshold_low<-threshold
     threshold_high<-1-threshold
     rmse <-c()
+    oob.error <-c()
+    r.squared <-c()
     outliers <- data.frame()
     outMatrixs <- list()
+    if(quantiles_type == 1000){
+        quantiles <- seq(0.001, 0.999,0.001)
+    }else if(quantiles_type == 400){
+        quantiles <- c(seq(0.0025,0.9975,0.0025))
+    }else{
+        quantiles <- c(seq(0.025,0.9975,0.025))
+    }
 
     if (verbose) {
     cat("\nOutlier identification by quantiles random forests\n")
@@ -129,6 +143,8 @@ outqrf <-function(data,
             quantreg = TRUE,
             ...)
         pred <- predict(qrf, data[,covariables], type = "quantiles",quantiles=quantiles)
+        oob.error <- c(oob.error,qrf$prediction.error)
+        r.squared <- c(qrf$r.squared,r.squared)
         outMatrix <- pred$predictions
         outMatrixs[[v]]<-outMatrix
         median_outMatrix <- outMatrix[,(length(quantiles)+1)/2]
@@ -138,17 +154,23 @@ outqrf <-function(data,
         rmse_ <- sqrt(sum(diffs*diffs)/(length(diffs)-1))
         rmse <- c(rmse,rmse_)
         rank_value <- get_right_rank(response,outMatrix,median_outMatrix,rmse_)
+        #rank_value <- find_quantile_position(response,outMatrix)
         outlier <- data.frame(row = as.numeric(row.names(data)),col = v,observed = response, predicted = median_outMatrix,rank = rank_value)
         outlier<- outlier|>dplyr::filter(rank<=threshold_low| rank>=threshold_high)
         outliers <- rbind(outliers,outlier)
     }
+
     names(rmse) <- numeric_features
+    names(oob.error) <- numeric_features
+    names(r.squared) <- numeric_features
     list(
     Data = data,
     outliers = outliers,
     n_outliers = table(outliers$col),
     threshold = threshold,
     rmse = rmse,
+    oob.error = oob.error,
+    r.squared = r.squared,
     outMatrixs =outMatrixs
     )
 
