@@ -4,18 +4,12 @@
 \alias{outqrf}
 \title{find outliers}
 \usage{
-outqrf(
-  data,
-  quantiles = seq(from = 0.001, to = 0.999, by = 0.001),
-  threshold = 0.025,
-  verbose = 1,
-  ...
-)
+outqrf(data, quantiles_type = 1000, threshold = 0.025, verbose = 1, ...)
 }
 \arguments{
 \item{data}{a data frame}
 
-\item{quantiles}{a vector of quantiles}
+\item{quantiles_type}{'1000':seq(from = 0.001, to = 0.999, by = 0.001),'400':seq(0.0025,0.9975,0.0025)}
 
 \item{threshold}{a threshold for outlier detection}
 

@@ -80,18 +80,13 @@ get_right_rank <- function(response,outMatrix,median_outMatrix,rmse_){
     return(rank_value)
 }
 
-find_quantile_position <- function(x, data) {
-    ecdf_data <- ecdf(data)
-    return(ecdf_data(x))
-}
-
 #' @title find outliers
 #' 
 #' @description
 #' This function finds outliers in a dataset using quantile random forests.
 #' 
 #' @param data a data frame
-#' @param quantiles_type 'all':seq(from = 0.001, to = 0.999, by = 0.001),'other':c(threshold,0.5,1-threshold)
+#' @param quantiles_type '1000':seq(from = 0.001, to = 0.999, by = 0.001),'400':seq(0.0025,0.9975,0.0025)
 #' @param threshold a threshold for outlier detection
 #' @param verbose a boolean value indicating whether to print verbose output
 #' @param ... additional arguments passed to the ranger function
@@ -154,7 +149,6 @@ outqrf <-function(data,
         rmse_ <- sqrt(sum(diffs*diffs)/(length(diffs)-1))
         rmse <- c(rmse,rmse_)
         rank_value <- get_right_rank(response,outMatrix,median_outMatrix,rmse_)
-        #rank_value <- find_quantile_position(response,outMatrix)
         outlier <- data.frame(row = as.numeric(row.names(data)),col = v,observed = response, predicted = median_outMatrix,rank = rank_value)
         outlier<- outlier|>dplyr::filter(rank<=threshold_low| rank>=threshold_high)
         outliers <- rbind(outliers,outlier)

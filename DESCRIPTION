@@ -1,8 +1,8 @@
 Package: outqrf
 Type: Package
 Title: Find the outlier by quantile random forests
-Version: 0.0.2
-Date: 2024-08-23
+Version: 0.0.3
+Date: 2024-08-26
 Author: Lucian Xu
 Maintainer: Lucian Xu <flystar233@gmail.com>
 Description: Find the outlier by quantile random forests
