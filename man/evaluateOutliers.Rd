@@ -20,5 +20,7 @@ A data frame containing the evaluation metrics.
 This function evaluates the performance of the outlier detection algorithm.
 }
 \examples{
-evaluateOutliers(original_data,anomaly_data,qrf$outliers)
+anomaly_data <- generateOutliers(iris, p = 0.05, sd_factor = 5, seed = 123)
+qrf<- outqrf(anomaly_data)
+evaluateOutliers(iris,anomaly_data,qrf$outliers)
 }

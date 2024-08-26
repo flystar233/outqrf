@@ -1,12 +1,12 @@
 #' @title get numberic value from string
-#' 
+#'
 #' @description
 #' This function extracts the numeric value from a string.
-#' 
+#'
 #' @param name a string
-#' 
+#'
 #' @return a numeric value
-#' 
+#'
 #' @examples
 #' get_quantily_value("quantiles = 0.001")
 #' @export
@@ -17,15 +17,15 @@ get_quantily_value <- function(name){
 }
 
 #' @title find the closest index
-#' 
+#'
 #' @description
 #' This function finds the closest index to a given value in a vector.
-#' 
+#'
 #' @param x a vector
 #' @param y a value
-#' 
+#'
 #' @return the index of the closest value in the vector
-#' 
+#'
 #' @examples
 #' find_max_index(c(1, 2, 3, 4, 5), 3.5)
 #' @export
@@ -35,8 +35,7 @@ find_index <- function(x, y) {
         index_name <- names(x)[index]
         value<-get_quantily_value(index_name)
         return(value)
-    } 
-    else {
+    }else {
         closest_index <- which(abs(x - y) == min(abs(x-y)))
         closest_index_name <- names(x)[closest_index]
         value <- get_quantily_value(closest_index_name)
@@ -45,35 +44,35 @@ find_index <- function(x, y) {
 }
 
 #' @title find the right rank
-#' 
+#'
 #' @description
 #' This function finds the right rank of a response value in a quantile random forest.
-#' 
+#'
 #' @param response a vector of response values
 #' @param outMatrix a matrix of out values
 #' @param median_outMatrix a vector of median out values
 #' @param rmse_ a vector of rmse values
-#' 
+#'
 #' @return a vector of ranks
-#' 
+#'
 get_right_rank <- function(response,outMatrix,median_outMatrix,rmse_){
     rank_value <-c()
-    for (i in 1:length(response)){
+    for (i in seq_along(response)){
         rank_<- find_index(outMatrix[i,],response[i])
         if (length(rank_)>1){
-            #We use a method similar to the outoutForest package to determine the exact rank, 
+            #We use a method similar to the outoutForest package to determine the exact rank,
             #but instead of the predicted mean of a random forest, we subtract the median prediction of qrf.
-            diff = response[i] -median_outMatrix[i]
-            if (abs(diff)>3*rmse_ & diff<0 ){
+            diff <- response[i] -median_outMatrix[i]
+            if (abs(diff)>3*rmse_ && diff<0 ){
                 min_value <- min(rank_)
                 rank_value<-c(rank_value,min_value)
-            } else if (abs(diff)>3*rmse_ & diff>0) {
+            } else if (abs(diff)>3*rmse_ && diff>0) {
                 max_value <- max(rank_)
                 rank_value<-c(rank_value,max_value)
             }else {
                 mean_value <- mean(rank_)
                 rank_value<-c(rank_value,mean_value)
-            }       
+            }
         }else {
              rank_value<-c(rank_value,rank_)
             }
@@ -83,10 +82,10 @@ get_right_rank <- function(response,outMatrix,median_outMatrix,rmse_){
 }
 
 #' @title find outliers
-#' 
+#'
 #' @description
 #' This function finds outliers in a dataset using quantile random forests.
-#' 
+#'
 #' @param data a data frame
 #' @param quantiles_type '1000':seq(from = 0.001, to = 0.999, by = 0.001), '400':seq(0.0025,0.9975,0.0025)
 #' @param threshold a threshold for outlier detection
@@ -109,23 +108,21 @@ get_right_rank <- function(response,outMatrix,median_outMatrix,rmse_){
 #'   - `oob.error`: Out-of-bag error of the quantile random forest model
 #'   - `rmse`: RMSE of the quantile random forest model
 #'   - `threshold`: Threshold for outlier detection
-#' @examples 
+#' @examples
 #' iris_with_outliers <- generateOutliers(iris, p=0.05)
 #' qrf = outqrf(iris_with_outliers)
 #' qrf$outliers
 #' evaluateOutliers(iris,iris_with_outliers,qrf$outliers)
 #' @export
 outqrf <-function(data,
-                    quantiles_type=1000,
-                    threshold =0.025,
-                    impute = TRUE,
-                    verbose = 1,
-                    ...){
-
-
+                  quantiles_type=1000,
+                  threshold =0.025,
+                  impute = TRUE,
+                  verbose = 1,
+                  ...){
     # Initial check
     if (!is.data.frame(data)) {
-        data <- as.data.frame(data) 
+        data <- as.data.frame(data)
     }
     if (!is.numeric(threshold)) {
         stop("Threshold must be a numeric value.")

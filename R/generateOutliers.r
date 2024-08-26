@@ -14,9 +14,9 @@ generateOutliers <- function(data, p = 0.05, sd_factor = 5, seed = NULL){
         stop("p and sd_factor must be between 0 and 1")
     }
     if (is.null(seed)) {
-    set.seed(123)
+        set.seed(123)
     } else {
-    set.seed(seed)
+        set.seed(seed)
     }
     data<- as.data.frame(data)
     numeric_features <- names(data)[sapply(data,is.numeric)]
