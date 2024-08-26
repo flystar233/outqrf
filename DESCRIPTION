@@ -5,7 +5,7 @@ Version: 0.0.3
 Date: 2024-08-26
 Author: Lucian Xu
 Maintainer: Lucian Xu <flystar233@gmail.com>
-Description: Find the outlier by quantile random forests
+Description: This package provides a method to find the outlier in custom data by quantile random forests("Quantile Regression Forests", Journal of Machine Learning Research, 7(Jun), 983-999, 2006.). It directly calls the ranger function of the ranger package to perform data fitting and prediction.In outqrf, we also implement the evaluation of outlier prediction results.
 LazyData: true
 License: GPL (>= 2)
 Depends: 
@@ -19,3 +19,4 @@ Imports:
     dplyr,
     missRanger
 URL: https://github.com/flystar233/outqrf
+BugReports: https://github.com/flystar233/outqrf/issues

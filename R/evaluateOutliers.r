@@ -7,7 +7,9 @@
 #' @param anomaly_result A data frame containing the predicted anomalies.
 #' @return A data frame containing the evaluation metrics.
 #' @examples 
-#' evaluateOutliers(original_data,anomaly_data,qrf$outliers)
+#' anomaly_data <- generateOutliers(iris, p = 0.05, sd_factor = 5, seed = 123)
+#' qrf<- outqrf(anomaly_data)
+#' evaluateOutliers(iris,anomaly_data,qrf$outliers)
 #' @export
 evaluateOutliers<- function(original_data, anomaly_data, anomaly_result){
     numeric_features <- names(original_data)[sapply(original_data,is.numeric)]
