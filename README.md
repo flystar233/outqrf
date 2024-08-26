@@ -48,7 +48,7 @@ out$outliers
 ## Evaluation on iris (Small Dataset)
 ```
 irisWithOutliers <- outqrf::generateOutliers(iris, p = 0.05,seed =2024)
-# 30
+# 32
 qrf <- outqrf(irisWithOutliers,quantiles_type=400)
 rf <- outForest(irisWithOutliers)
 
@@ -79,7 +79,7 @@ data <- diamonds|>select(price,carat,cut,color,clarity)
 data2 <- outqrf::generateOutliers(data, p = 0.001,seed =2024)
 # 108
 qrf <- outqrf(data2,num.threads=8,quantiles_type=400)
-# The process can be slow because it needs to predict the value at 1000 quantiles for each observation. 
+# The process can be slow because it needs to predict the value at 400|1000 quantiles for each observation. 
 rf <- outForest(data2)
 
 evaluateOutliers(data,data2,qrf$outliers)
