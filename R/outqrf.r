@@ -91,9 +91,9 @@ get_right_rank <- function(response,outMatrix,median_outMatrix,rmse_){
 #' @param quantiles_type '1000':seq(from = 0.001, to = 0.999, by = 0.001), '400':seq(0.0025,0.9975,0.0025)
 #' @param threshold a threshold for outlier detection
 #' @param verbose a boolean value indicating whether to print verbose output
+#' @param impute a boolean value indicating whether to impute missing values
 #' @param ... additional arguments passed to the ranger function
-#' 
-#' @returns
+#' @return
 #' An object of class "outqrf" and a list with the following elements.
 #'   - `Data`: Original data set in unchanged row order
 #'   - `outliers`: Compact representation of outliers. Each row corresponds to an outlier and contains the following columns:
@@ -118,6 +118,7 @@ get_right_rank <- function(response,outMatrix,median_outMatrix,rmse_){
 outqrf <-function(data,
                     quantiles_type=1000,
                     threshold =0.025,
+                    impute = TRUE,
                     verbose = 1,
                     ...){
 
@@ -135,7 +136,15 @@ outqrf <-function(data,
     if (!(quantiles_type %in% c(1000, 400, 40))) {
         stop("quantiles_type should be one of 1000, 400, 40")
     }
+    # impute missing values with missRanger
+    if (anyNA(data)) {
+        if(impute){
+        data <- missRanger::missRanger(data, pmm.k = 3, num.trees = 500,data_only=TRUE,verbose=0)
+        }else{
+            stop("Missing values detected. Please impute them first!")
+        }
 
+    }
     # Definition of variables
     threshold_low<-threshold
     threshold_high<-1-threshold
