@@ -61,6 +61,8 @@ get_right_rank <- function(response,outMatrix,median_outMatrix,rmse_){
     for (i in 1:length(response)){
         rank_<- find_index(outMatrix[i,],response[i])
         if (length(rank_)>1){
+            #We use a method similar to the outoutForest package to determine the exact rank, 
+            #but instead of the predicted mean of a random forest, we subtract the median prediction of qrf.
             diff = response[i] -median_outMatrix[i]
             if (abs(diff)>3*rmse_ & diff<0 ){
                 min_value <- min(rank_)
@@ -86,25 +88,58 @@ get_right_rank <- function(response,outMatrix,median_outMatrix,rmse_){
 #' This function finds outliers in a dataset using quantile random forests.
 #' 
 #' @param data a data frame
-#' @param quantiles_type '1000':seq(from = 0.001, to = 0.999, by = 0.001),'400':seq(0.0025,0.9975,0.0025)
+#' @param quantiles_type '1000':seq(from = 0.001, to = 0.999, by = 0.001), '400':seq(0.0025,0.9975,0.0025)
 #' @param threshold a threshold for outlier detection
 #' @param verbose a boolean value indicating whether to print verbose output
 #' @param ... additional arguments passed to the ranger function
 #' 
-#' @return a data frame of outliers
-#' 
+#' @returns
+#' An object of class "outqrf" and a list with the following elements.
+#'   - `Data`: Original data set in unchanged row order
+#'   - `outliers`: Compact representation of outliers. Each row corresponds to an outlier and contains the following columns:
+#'     - `row`: Row number of the outlier
+#'     - `col`: Variable name of the outlier
+#'     - `observed`: value of the outlier
+#'     - `predicted`: predicted value of the outlier
+#'     - `rank`: Rank of the outlier
+#'   - `outMatrix`: Predicted value at different quantiles for each observation
+#'   - `r.squared`: R-squared value of the quantile random forest model
+#'   - `outMatrix`: Predicted value at different quantiles for each observation
+#'   - `r.squared`: R-squared value of the quantile random forest model
+#'   - `oob.error`: Out-of-bag error of the quantile random forest model
+#'   - `rmse`: RMSE of the quantile random forest model
+#'   - `threshold`: Threshold for outlier detection
 #' @examples 
-#' outqrf(iris)
+#' iris_with_outliers <- generateOutliers(iris, p=0.05)
+#' qrf = outqrf(iris_with_outliers)
+#' qrf$outliers
+#' evaluateOutliers(iris,iris_with_outliers,qrf$outliers)
 #' @export
 outqrf <-function(data,
                     quantiles_type=1000,
                     threshold =0.025,
                     verbose = 1,
                     ...){
-    data <- as.data.frame(data)
-    numeric_features <- names(data)[sapply(data,is.numeric)]
+
+
+    # Initial check
+    if (!is.data.frame(data)) {
+        data <- as.data.frame(data) 
+    }
+    if (!is.numeric(threshold)) {
+        stop("Threshold must be a numeric value.")
+    }
+    if (threshold < 0 || threshold > 1) {
+        stop("Threshold should be between 0 and 1")
+    }
+    if (!(quantiles_type %in% c(1000, 400, 40))) {
+        stop("quantiles_type should be one of 1000, 400, 40")
+    }
+
+    # Definition of variables
     threshold_low<-threshold
     threshold_high<-1-threshold
+    numeric_features <- names(data)[sapply(data,is.numeric)]
     rmse <-c()
     oob.error <-c()
     r.squared <-c()
@@ -127,6 +162,7 @@ outqrf <-function(data,
     cat("\n\n  Checking: ")
     }
 
+    # Loop over numeric features
     for (v in numeric_features){
         if (verbose) {
             cat(v, " ")
@@ -153,10 +189,11 @@ outqrf <-function(data,
         outlier<- outlier|>dplyr::filter(rank<=threshold_low| rank>=threshold_high)
         outliers <- rbind(outliers,outlier)
     }
-
+    # names of the variables
     names(rmse) <- numeric_features
     names(oob.error) <- numeric_features
     names(r.squared) <- numeric_features
+    # return the results
     list(
     Data = data,
     outliers = outliers,
