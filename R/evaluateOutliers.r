@@ -21,7 +21,8 @@ evaluateOutliers<- function(original_data, anomaly_data, anomaly_result){
     intersection <- merge(predict_indices,actual_indices)
     Coverage <- nrow(intersection)/nrow(actual_indices)
     Efficiency <- nrow(intersection)/nrow(predict_indices)
-    result <- c('Coverage'=nrow(intersection)/nrow(actual_indices),'Efficiency'=nrow(intersection)/nrow(predict_indices))
+    result <- c('Actual'=nrow(actual_indices),'Predicted'=nrow(predict_indices),'Cover'=nrow(intersection),'Coverage'=nrow(intersection)/nrow(actual_indices),'Efficiency'=nrow(intersection)/nrow(predict_indices))
+    result <- round(result,2)
     return(result)
 
 }
