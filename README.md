@@ -21,7 +21,7 @@ We first generate a data set with about 5% outliers values in each numeric colum
 #Generate data with outliers in numeric columns
 irisWithOutliers <- generateOutliers(iris, p = 0.05,seed =2024)
 # Find outliers by quantile random forest regressions
-out <- outqrf(irisWithOutliers)
+out <- outqrf(irisWithOutliers,quantiles_type=400)
 out$outliers
 #    row          col    observed predicted  rank
 # 1   32 Sepal.Length  14.9308229       5.4 0.999
@@ -47,16 +47,17 @@ out$outliers
 
 ## Evaluation on iris (Small Dataset)
 ```
-irisWithOutliers <- outqrf::generateOutliers(iris, p = 0.1,seed =2024)
-# 60
-qrf <- outqrf(irisWithOutliers)
+irisWithOutliers <- outqrf::generateOutliers(iris, p = 0.05,seed =2024)
+# 30
+qrf <- outqrf(irisWithOutliers,quantiles_type=400)
 rf <- outForest(irisWithOutliers)
-qrf_out <- qrf$outliers
-rf_out <- rf$outliers
-qrf_num <- length(qrf_out)
-#18
-rf_num <- length(rf_out)
-#21
+
+evaluateOutliers(iris,irisWithOutliers,qrf$outliers)
+#Actual  Predicted      Cover   Coverage Efficiency 
+# 32.00      17.00      17.00       0.53       1.00 
+evaluateOutliers(iris,irisWithOutliers,rf$outliers)
+#Actual  Predicted      Cover   Coverage Efficiency
+# 32.00      19.00      19.00       0.59       1.00 
 boxplot_num <- 0
 # find outliers use boxplot 
 for (i in names(irisWithOutliers)[sapply(irisWithOutliers,is.numeric)]){
@@ -75,14 +76,17 @@ for (i in names(irisWithOutliers)[sapply(irisWithOutliers,is.numeric)]){
 ## Evaluation on diamonds (Big Dataset)
 ```
 data <- diamonds|>select(price,carat,cut,color,clarity)
-data <- outqrf::generateOutliers(data, p = 0.002,seed =2024)
-# 214
-qrf <- outqrf(data,num.threads=8)
+data2 <- outqrf::generateOutliers(data, p = 0.001,seed =2024)
+# 108
+qrf <- outqrf(data2,num.threads=8,quantiles_type=400)
 # The process can be slow because it needs to predict the value at 1000 quantiles for each observation. 
-rf <- outForest(data)
-qrf_out <- qrf$outliers
-# 361
-rf_out <- rf$outliers
-# 486
+rf <- outForest(data2)
+
+evaluateOutliers(data,data2,qrf$outliers)
+#Actual  Predicted      Cover   Coverage Efficiency 
+#108.00     369.00     103.00       0.95       0.28 
+evaluateOutliers(data,data2,rf$outliers)
+#Actual  Predicted      Cover   Coverage Efficiency 
+#108.00     687.00     104.00       0.96       0.15
 ```
 
