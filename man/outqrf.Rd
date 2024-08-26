@@ -4,25 +4,55 @@
 \alias{outqrf}
 \title{find outliers}
 \usage{
-outqrf(data, quantiles_type = 1000, threshold = 0.025, verbose = 1, ...)
+outqrf(
+  data,
+  quantiles_type = 1000,
+  threshold = 0.025,
+  impute = TRUE,
+  verbose = 1,
+  ...
+)
 }
 \arguments{
 \item{data}{a data frame}
 
-\item{quantiles_type}{'1000':seq(from = 0.001, to = 0.999, by = 0.001),'400':seq(0.0025,0.9975,0.0025)}
+\item{quantiles_type}{'1000':seq(from = 0.001, to = 0.999, by = 0.001), '400':seq(0.0025,0.9975,0.0025)}
 
 \item{threshold}{a threshold for outlier detection}
+
+\item{impute}{a boolean value indicating whether to impute missing values}
 
 \item{verbose}{a boolean value indicating whether to print verbose output}
 
 \item{...}{additional arguments passed to the ranger function}
 }
 \value{
-a data frame of outliers
+An object of class "outqrf" and a list with the following elements.
+\itemize{
+\item \code{Data}: Original data set in unchanged row order
+\item \code{outliers}: Compact representation of outliers. Each row corresponds to an outlier and contains the following columns:
+\itemize{
+\item \code{row}: Row number of the outlier
+\item \code{col}: Variable name of the outlier
+\item \code{observed}: value of the outlier
+\item \code{predicted}: predicted value of the outlier
+\item \code{rank}: Rank of the outlier
+}
+\item \code{outMatrix}: Predicted value at different quantiles for each observation
+\item \code{r.squared}: R-squared value of the quantile random forest model
+\item \code{outMatrix}: Predicted value at different quantiles for each observation
+\item \code{r.squared}: R-squared value of the quantile random forest model
+\item \code{oob.error}: Out-of-bag error of the quantile random forest model
+\item \code{rmse}: RMSE of the quantile random forest model
+\item \code{threshold}: Threshold for outlier detection
+}
 }
 \description{
 This function finds outliers in a dataset using quantile random forests.
 }
 \examples{
-outqrf(iris)
+iris_with_outliers <- generateOutliers(iris, p=0.05)
+qrf = outqrf(iris_with_outliers)
+qrf$outliers
+evaluateOutliers(iris,iris_with_outliers,qrf$outliers)
 }
