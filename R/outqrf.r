@@ -143,7 +143,6 @@ outqrf <-function(data,
         }else{
             stop("Missing values detected. Please impute them first!")
         }
-
     }
     # Definition of variables
     threshold_low<-threshold

@@ -16,5 +16,6 @@ Packaged: 2024-08-22 11:06:44 UTC;
 RoxygenNote: 7.3.2
 Imports: 
     ranger,
-    dplyr
+    dplyr,
+    missRanger
 URL: https://github.com/flystar233/outqrf
