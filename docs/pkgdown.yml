@@ -3,7 +3,7 @@ pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   outqrf: outqrf.html
-last_built: 2024-08-27T13:29Z
+last_built: 2024-08-27T14:00Z
 urls:
   reference: flystar233.github.io/outqrf/reference
   article: flystar233.github.io/outqrf/articles

@@ -56,6 +56,8 @@ qrf <- outqrf(irisWithOutliers,quantiles_type=400)
 evaluateOutliers(iris,irisWithOutliers,qrf$outliers)
 ```
 
+
+
 ```{r Evaluation1_1, eval=FALSE}
 plot(qrf)
 ```
@@ -66,8 +68,6 @@ irisWithOutliers <- generateOutliers(iris, p = 0.05,seed =2024)
 qrf <- outqrf(irisWithOutliers,quantiles_type=400)
 plot(qrf)
 ```
-
-![](https://github.com/user-attachments/assets/073f4e4d-3c80-459a-af50-40988d769899)
 
 ## Evaluation on diamonds (Big Dataset)
 

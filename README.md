@@ -64,7 +64,7 @@ for (i in names(irisWithOutliers)[sapply(irisWithOutliers,is.numeric)]){
 boxplot_num
 # 28
 ```
-![Rplot](https://github.com/user-attachments/assets/0a453eb9-3901-4c46-a4f4-ee86c386a701)
+![](https://github.com/user-attachments/assets/0a453eb9-3901-4c46-a4f4-ee86c386a701)
 
 Then, use outqtf and outForest respectively to detect outliers.
 ```
@@ -82,7 +82,7 @@ We can even display the original values and outliers of the data using a paired 
 ```
 plot(qrf)
 ```
-![Rplot02](https://github.com/user-attachments/assets/073f4e4d-3c80-459a-af50-40988d769899)
+![](https://github.com/user-attachments/assets/073f4e4d-3c80-459a-af50-40988d769899)
 
 ## Evaluation on diamonds (Big Dataset)
 ```
