@@ -9,18 +9,18 @@
 #' irisWithOutliers <- generateOutliers(iris, seed = 2024)
 #' qrf <- outqrf(irisWithOutliers)
 #' plot(qrf)
-plot.outqrf<- function(qrf) {
+plot.outqrf<- function(x) {
     result_df <- data.frame()
-    data <- qrf$Data
-    for (i in seq_along(qrf$outMatrixs)) {
-        temp_df <- as.data.frame(qrf$outMatrixs[[i]][,qrf$quantiles_type/2])
+    data <- x$Data
+    for (i in seq_along(x$outMatrixs)) {
+        temp_df <- as.data.frame(x$outMatrixs[[i]][,x$quantiles_type/2])
         if (nrow(result_df) == 0) {
           result_df <- temp_df
         } else {
           result_df <- cbind(result_df, temp_df)
         }
     }
-    names(result_df) = names(qrf$outMatrixs)
+    names(result_df) = names(x$outMatrixs)
     result_df <- dplyr::mutate(result_df,tag = "predicted")
     numeric_features <- names(data)[sapply(data,is.numeric)]
     data <- data[numeric_features]
