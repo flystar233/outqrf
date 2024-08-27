@@ -22,7 +22,7 @@ Imports:
     ranger,
     dplyr,
     missRanger
-URL: https://github.com/flystar233/outqrf
+URL: https://github.com/flystar233/outqrf, flystar233.github.io/outqrf
 BugReports: https://github.com/flystar233/outqrf/issues
 Suggests: 
     renv,
