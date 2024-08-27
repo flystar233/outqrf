@@ -9,10 +9,10 @@
 #' irisWithOutliers <- generateOutliers(iris, seed = 2024)
 #' qrf <- outqrf(irisWithOutliers)
 #' plot(qrf)
-library(ggpubr)
-library(dplyr)
-library(tidyr)
 plot.outqrf<- function(qrf) {
+    library(ggpubr)
+    library(dplyr)
+    library(tidyr)
     result_df <- data.frame()
     data <- qrf$Data
     for (i in seq_along(qrf$outMatrixs)) {
