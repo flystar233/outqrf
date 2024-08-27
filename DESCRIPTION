@@ -1,8 +1,8 @@
 Package: outqrf
 Type: Package
 Title: Find the outlier by quantile random forests
-Version: 0.0.3
-Date: 2024-08-26
+Version: 1.0.0
+Date: 2024-08-27
 Authors@R: 
     person(given = "Tengfei",
            family = "Xu",
