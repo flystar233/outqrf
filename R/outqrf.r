@@ -27,7 +27,7 @@ get_quantily_value <- function(name){
 #' @return the index of the closest value in the vector
 #'
 #' @examples
-#' find_max_index(c(1, 2, 3, 4, 5), 3.5)
+#' find_index(c(1, 2, 3, 4, 5), 3.5)
 #' @export
 find_index <- function(x, y) {
     index <- which(x == y)
