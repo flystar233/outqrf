@@ -21,7 +21,9 @@ RoxygenNote: 7.3.2
 Imports: 
     ranger,
     dplyr,
-    missRanger
+    missRanger,
+    ggpubr,
+    tidyr
 URL: https://github.com/flystar233/outqrf, flystar233.github.io/outqrf
 BugReports: https://github.com/flystar233/outqrf/issues
 Suggests: 

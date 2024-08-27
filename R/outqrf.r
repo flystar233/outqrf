@@ -199,7 +199,7 @@ outqrf <-function(data,
     names(oob.error) <- numeric_features
     names(r.squared) <- numeric_features
     # return the results
-    list(
+    return_result<- list(
     Data = data,
     outliers = outliers,
     n_outliers = table(outliers$col),
@@ -209,5 +209,7 @@ outqrf <-function(data,
     r.squared = r.squared,
     outMatrixs =outMatrixs
     )
+    class(return_result) <- c("outqrf")
+    return_result
 
 }
