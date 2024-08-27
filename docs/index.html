@@ -94,19 +94,11 @@
 <div class="section level2">
 <h2 id="evaluation-on-iris-small-dataset">Evaluation on iris (Small Dataset)<a class="anchor" aria-label="anchor" href="#evaluation-on-iris-small-dataset"></a>
 </h2>
-<pre><code><span><span class="va">irisWithOutliers</span> <span class="op">&lt;-</span> <span class="fu">outqrf</span><span class="fu">::</span><span class="fu"><a href="reference/generateOutliers.html">generateOutliers</a></span><span class="op">(</span><span class="va">iris</span>, p <span class="op">=</span> <span class="fl">0.05</span>,seed <span class="op">=</span><span class="fl">2024</span><span class="op">)</span></span>
+<p>First, let’s simply detect outliers in the data using a box plot.</p>
+<pre><code><span><span class="co"># find outliers use boxplot</span></span>
 <span><span class="co"># 32</span></span>
-<span><span class="va">qrf</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/outqrf.html">outqrf</a></span><span class="op">(</span><span class="va">irisWithOutliers</span>,quantiles_type<span class="op">=</span><span class="fl">400</span><span class="op">)</span></span>
-<span><span class="va">rf</span> <span class="op">&lt;-</span> <span class="fu">outForest</span><span class="op">(</span><span class="va">irisWithOutliers</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="reference/evaluateOutliers.html">evaluateOutliers</a></span><span class="op">(</span><span class="va">iris</span>,<span class="va">irisWithOutliers</span>,<span class="va">qrf</span><span class="op">$</span><span class="va">outliers</span><span class="op">)</span></span>
-<span><span class="co">#Actual  Predicted      Cover   Coverage Efficiency</span></span>
-<span><span class="co"># 32.00      17.00      17.00       0.53       1.00</span></span>
-<span><span class="fu"><a href="reference/evaluateOutliers.html">evaluateOutliers</a></span><span class="op">(</span><span class="va">iris</span>,<span class="va">irisWithOutliers</span>,<span class="va">rf</span><span class="op">$</span><span class="va">outliers</span><span class="op">)</span></span>
-<span><span class="co">#Actual  Predicted      Cover   Coverage Efficiency</span></span>
-<span><span class="co"># 32.00      19.00      19.00       0.59       1.00</span></span>
-<span><span class="va">boxplot_num</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
-<span><span class="co"># find outliers use boxplot</span></span>
+<span><span class="va">irisWithOutliers</span> <span class="op">&lt;-</span> <span class="fu">outqrf</span><span class="fu">::</span><span class="fu"><a href="reference/generateOutliers.html">generateOutliers</a></span><span class="op">(</span><span class="va">iris</span>, p <span class="op">=</span> <span class="fl">0.05</span>,seed <span class="op">=</span><span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="va">boxplot_num</span> <span class="op">=</span> <span class="fl">0</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">irisWithOutliers</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">irisWithOutliers</span>,<span class="va">is.numeric</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">q1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">irisWithOutliers</span><span class="op">[</span>,<span class="va">i</span><span class="op">]</span>, <span class="fl">0.25</span><span class="op">)</span></span>
 <span>  <span class="va">q3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">irisWithOutliers</span><span class="op">[</span>,<span class="va">i</span><span class="op">]</span>, <span class="fl">0.75</span><span class="op">)</span></span>
@@ -116,9 +108,25 @@
 <span>  <span class="va">num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">irisWithOutliers</span><span class="op">[</span>,<span class="va">i</span><span class="op">]</span><span class="op">&lt;</span><span class="va">lower_bound</span><span class="op">|</span><span class="va">irisWithOutliers</span><span class="op">[</span>,<span class="va">i</span><span class="op">]</span><span class="op">&gt;</span><span class="va">upper_bound</span><span class="op">)</span></span>
 <span>  <span class="va">boxplot_num</span><span class="op">&lt;-</span><span class="va">boxplot_num</span><span class="op">+</span><span class="va">num</span></span>
 <span><span class="op">}</span></span>
-<span><span class="co"># 43</span></span></code></pre>
+<span><span class="va">boxplot_num</span></span>
+<span><span class="co"># 28</span></span></code></pre>
 <div class="figure">
 <img src="https://github.com/user-attachments/assets/0a453eb9-3901-4c46-a4f4-ee86c386a701" alt=""><p class="caption">Rplot</p>
+</div>
+<p>Then, use outqtf and outForest respectively to detect outliers.</p>
+<pre><code><span><span class="va">qrf</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/outqrf.html">outqrf</a></span><span class="op">(</span><span class="va">irisWithOutliers</span>,quantiles_type<span class="op">=</span><span class="fl">400</span><span class="op">)</span></span>
+<span><span class="va">rf</span> <span class="op">&lt;-</span> <span class="fu">outForest</span><span class="op">(</span><span class="va">irisWithOutliers</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/evaluateOutliers.html">evaluateOutliers</a></span><span class="op">(</span><span class="va">iris</span>,<span class="va">irisWithOutliers</span>,<span class="va">qrf</span><span class="op">$</span><span class="va">outliers</span><span class="op">)</span></span>
+<span><span class="co">#Actual  Predicted      Cover   Coverage Efficiency</span></span>
+<span><span class="co"># 32.00      17.00      17.00       0.53       1.00</span></span>
+<span><span class="fu"><a href="reference/evaluateOutliers.html">evaluateOutliers</a></span><span class="op">(</span><span class="va">iris</span>,<span class="va">irisWithOutliers</span>,<span class="va">rf</span><span class="op">$</span><span class="va">outliers</span><span class="op">)</span></span>
+<span><span class="co">#Actual  Predicted      Cover   Coverage Efficiency</span></span>
+<span><span class="co"># 32.00      19.00      19.00       0.59       1.00 </span></span></code></pre>
+<p>We can even display the original values and outliers of the data using a paired box plot.</p>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">qrf</span><span class="op">)</span></span></code></pre>
+<div class="figure">
+<img src="https://github.com/user-attachments/assets/073f4e4d-3c80-459a-af50-40988d769899" alt=""><p class="caption">Rplot02</p>
 </div>
 </div>
 <div class="section level2">
@@ -126,11 +134,9 @@
 </h2>
 <pre><code><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">diamonds</span><span class="op">|&gt;</span><span class="fu">select</span><span class="op">(</span><span class="va">price</span>,<span class="va">carat</span>,<span class="va">cut</span>,<span class="va">color</span>,<span class="va">clarity</span><span class="op">)</span></span>
 <span><span class="va">data2</span> <span class="op">&lt;-</span> <span class="fu">outqrf</span><span class="fu">::</span><span class="fu"><a href="reference/generateOutliers.html">generateOutliers</a></span><span class="op">(</span><span class="va">data</span>, p <span class="op">=</span> <span class="fl">0.001</span>,seed <span class="op">=</span><span class="fl">2024</span><span class="op">)</span></span>
-<span><span class="co"># 108</span></span>
 <span><span class="va">qrf</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/outqrf.html">outqrf</a></span><span class="op">(</span><span class="va">data2</span>,num.threads<span class="op">=</span><span class="fl">8</span>,quantiles_type<span class="op">=</span><span class="fl">400</span><span class="op">)</span></span>
 <span><span class="co"># The process can be slow because it needs to predict the value at 400|1000 quantiles for each observation.</span></span>
 <span><span class="va">rf</span> <span class="op">&lt;-</span> <span class="fu">outForest</span><span class="op">(</span><span class="va">data2</span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu"><a href="reference/evaluateOutliers.html">evaluateOutliers</a></span><span class="op">(</span><span class="va">data</span>,<span class="va">data2</span>,<span class="va">qrf</span><span class="op">$</span><span class="va">outliers</span><span class="op">)</span></span>
 <span><span class="co">#Actual  Predicted      Cover   Coverage Efficiency</span></span>
 <span><span class="co">#108.00     369.00     103.00       0.95       0.28</span></span>

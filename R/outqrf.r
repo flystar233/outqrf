@@ -208,6 +208,7 @@ outqrf <-function(data,
     oob.error = oob.error,
     r.squared = r.squared,
     outMatrixs =outMatrixs
+    quantiles_type = quantiles_type
     )
     class(return_result) <- c("outqrf")
     return_result

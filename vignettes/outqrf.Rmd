@@ -46,10 +46,32 @@ out <- outqrf(irisWithOutliers,quantiles_type=400)
 out$outliers
 ```
 
-## Evaluation on diamonds (Big Dataset)
+## Evaluation on diamonds (Small Dataset)
 
 ```{r Evaluation1, echo=TRUE}
-library(outForest)
+library(outqrf)
+irisWithOutliers <- generateOutliers(iris, p = 0.05,seed =2024)
+qrf <- outqrf(irisWithOutliers,quantiles_type=400)
+
+evaluateOutliers(iris,irisWithOutliers,qrf$outliers)
+```
+
+```{r Evaluation1_1, eval=FALSE}
+plot(qrf)
+```
+
+```{r Evaluation1_2, echo=FALSE}
+library(outqrf)
+irisWithOutliers <- generateOutliers(iris, p = 0.05,seed =2024)
+qrf <- outqrf(irisWithOutliers,quantiles_type=400)
+plot(qrf)
+```
+
+![](https://github.com/user-attachments/assets/073f4e4d-3c80-459a-af50-40988d769899)
+
+## Evaluation on diamonds (Big Dataset)
+
+```{r Evaluation2, echo=TRUE}
 library(outqrf)
 library(tidyverse)
 data <- diamonds|>select(price,carat,cut,color,clarity)
@@ -58,14 +80,4 @@ data2 <- outqrf::generateOutliers(data, p = 0.001,seed =2024)
 qrf <- outqrf(data2,num.threads=8,quantiles_type=400)
 #The process can be slow because it needs to predict the value at 400|1000 quantiles for each observation. 
 evaluateOutliers(data,data2,qrf$outliers)
-```
-
-```{r Evaluation2, echo=TRUE}
-library(outForest)
-library(outqrf)
-library(tidyverse)
-data <- diamonds|>select(price,carat,cut,color,clarity)
-data2 <- outqrf::generateOutliers(data, p = 0.001,seed =2024)
-rf <- outForest(data2)
-evaluateOutliers(data,data2,rf$outliers)
 ```

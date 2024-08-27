@@ -9,11 +9,14 @@
 #' irisWithOutliers <- generateOutliers(iris, seed = 2024)
 #' qrf <- outqrf(irisWithOutliers)
 #' plot(qrf)
+library(ggpubr)
+library(dplyr)
+library(tidyr)
 plot.outqrf<- function(qrf) {
     result_df <- data.frame()
     data <- qrf$Data
     for (i in seq_along(qrf$outMatrixs)) {
-        temp_df <- as.data.frame(qrf$outMatrixs[[i]][,500])
+        temp_df <- as.data.frame(qrf$outMatrixs[[i]][,qrf$quantiles_type/2])
         if (nrow(result_df) == 0) {
           result_df <- temp_df
         } else {
@@ -27,7 +30,7 @@ plot.outqrf<- function(qrf) {
     data <- mutate(data,tag = "observed")
     plot_in <-rbind(result_df,data)
     plot_in_longer<- plot_in|>pivot_longer(!tag,names_to ="features",values_to ="value" )
-    p<- ggpubr::ggpaired(plot_in_longer, x="tag", y="value",
+    p<- ggpaired(plot_in_longer, x="tag", y="value",
              fill="tag", palette = "jco",
              line.color = "grey", line.size =0.8, width = 0.4,short.panel.labs = FALSE)+
              stat_compare_means(label = "p.format", paired = TRUE)+theme(legend.position = "none")+facet_wrap(~features, scales = "free")
