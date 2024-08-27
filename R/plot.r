@@ -10,9 +10,6 @@
 #' qrf <- outqrf(irisWithOutliers)
 #' plot(qrf)
 plot.outqrf<- function(qrf) {
-    library(ggpubr)
-    library(dplyr)
-    library(tidyr)
     result_df <- data.frame()
     data <- qrf$Data
     for (i in seq_along(qrf$outMatrixs)) {
@@ -24,15 +21,15 @@ plot.outqrf<- function(qrf) {
         }
     }
     names(result_df) = names(qrf$outMatrixs)
-    result_df <- mutate(result_df,tag = "predicted")
+    result_df <- dplyr::mutate(result_df,tag = "predicted")
     numeric_features <- names(data)[sapply(data,is.numeric)]
     data <- data[numeric_features]
-    data <- mutate(data,tag = "observed")
+    data <- dplyr::mutate(data,tag = "observed")
     plot_in <-rbind(result_df,data)
-    plot_in_longer<- plot_in|>pivot_longer(!tag,names_to ="features",values_to ="value" )
-    p<- ggpaired(plot_in_longer, x="tag", y="value",
+    plot_in_longer<- plot_in|>tidyr::pivot_longer(!tag,names_to ="features",values_to ="value" )
+    p<- ggpubr::ggpaired(plot_in_longer, x="tag", y="value",
              fill="tag", palette = "jco",
              line.color = "grey", line.size =0.8, width = 0.4,short.panel.labs = FALSE)+
-             stat_compare_means(label = "p.format", paired = TRUE)+theme(legend.position = "none")+facet_wrap(~features, scales = "free")
+        ggpubr::stat_compare_means(label = "p.format", paired = TRUE)+ggplot2::theme(legend.position = "none")+ggplot2::facet_wrap(~features, scales = "free")
     return(p)
 }
