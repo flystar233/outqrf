@@ -18,5 +18,5 @@ the index of the closest value in the vector
 This function finds the closest index to a given value in a vector.
 }
 \examples{
-find_max_index(c(1, 2, 3, 4, 5), 3.5)
+find_index(c(1, 2, 3, 4, 5), 3.5)
 }
