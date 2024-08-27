@@ -29,7 +29,7 @@ plot.outqrf<- function(qrf) {
     plot_in_longer<- plot_in|>pivot_longer(!tag,names_to ="features",values_to ="value" )
     p<- ggpubr::ggpaired(plot_in_longer, x="tag", y="value",
              fill="tag", palette = "jco",
-             line.color = "grey", line.size =0.8, width = 0.8,short.panel.labs = FALSE)+
+             line.color = "grey", line.size =0.8, width = 0.4,short.panel.labs = FALSE)+
              stat_compare_means(label = "p.format", paired = TRUE)+theme(legend.position = "none")+facet_wrap(~features, scales = "free")
     return(p)
 }
