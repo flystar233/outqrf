@@ -46,20 +46,12 @@ out$outliers
 ```
 
 ## Evaluation on iris (Small Dataset)
+First, let's simply detect outliers in the data using a box plot.
 ```
-irisWithOutliers <- outqrf::generateOutliers(iris, p = 0.05,seed =2024)
+# find outliers use boxplot
 # 32
-qrf <- outqrf(irisWithOutliers,quantiles_type=400)
-rf <- outForest(irisWithOutliers)
-
-evaluateOutliers(iris,irisWithOutliers,qrf$outliers)
-#Actual  Predicted      Cover   Coverage Efficiency 
-# 32.00      17.00      17.00       0.53       1.00 
-evaluateOutliers(iris,irisWithOutliers,rf$outliers)
-#Actual  Predicted      Cover   Coverage Efficiency
-# 32.00      19.00      19.00       0.59       1.00 
-boxplot_num <- 0
-# find outliers use boxplot 
+irisWithOutliers <- outqrf::generateOutliers(iris, p = 0.05,seed =2024)
+boxplot_num = 0
 for (i in names(irisWithOutliers)[sapply(irisWithOutliers,is.numeric)]){
   q1 <- quantile(irisWithOutliers[,i], 0.25)
   q3 <- quantile(irisWithOutliers[,i], 0.75)
@@ -69,19 +61,36 @@ for (i in names(irisWithOutliers)[sapply(irisWithOutliers,is.numeric)]){
   num <- sum(irisWithOutliers[,i]<lower_bound|irisWithOutliers[,i]>upper_bound)
   boxplot_num<-boxplot_num+num
 }
-# 43
+boxplot_num
+# 28
 ```
 ![Rplot](https://github.com/user-attachments/assets/0a453eb9-3901-4c46-a4f4-ee86c386a701)
+
+Then, use outqtf and outForest respectively to detect outliers.
+```
+qrf <- outqrf(irisWithOutliers,quantiles_type=400)
+rf <- outForest(irisWithOutliers)
+
+evaluateOutliers(iris,irisWithOutliers,qrf$outliers)
+#Actual  Predicted      Cover   Coverage Efficiency 
+# 32.00      17.00      17.00       0.53       1.00 
+evaluateOutliers(iris,irisWithOutliers,rf$outliers)
+#Actual  Predicted      Cover   Coverage Efficiency
+# 32.00      19.00      19.00       0.59       1.00 
+```
+We can even display the original values and outliers of the data using a paired box plot.
+```
+plot(qrf)
+```
+![Rplot02](https://github.com/user-attachments/assets/073f4e4d-3c80-459a-af50-40988d769899)
 
 ## Evaluation on diamonds (Big Dataset)
 ```
 data <- diamonds|>select(price,carat,cut,color,clarity)
 data2 <- outqrf::generateOutliers(data, p = 0.001,seed =2024)
-# 108
 qrf <- outqrf(data2,num.threads=8,quantiles_type=400)
 # The process can be slow because it needs to predict the value at 400|1000 quantiles for each observation. 
 rf <- outForest(data2)
-
 evaluateOutliers(data,data2,qrf$outliers)
 #Actual  Predicted      Cover   Coverage Efficiency 
 #108.00     369.00     103.00       0.95       0.28 
