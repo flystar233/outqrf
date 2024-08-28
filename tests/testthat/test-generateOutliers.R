@@ -1,5 +1,3 @@
-library(testthat)
-library(outqrf)
 test_that("generateOutliers(p = 0.2) changes vector as expected", {
   x <- 1:10
   p <- 0.2
