@@ -178,7 +178,7 @@ outqrf <-function(data,
             data = data,
             quantreg = TRUE,
             ...)
-        pred <- predict(qrf, data[,covariables], type = "quantiles",quantiles=quantiles)
+        pred <- predict(qrf, data[covariables], type = "quantiles",quantiles=quantiles)
         oob.error <- c(oob.error,qrf$prediction.error)
         r.squared <- c(qrf$r.squared,r.squared)
         outMatrix <- pred$predictions
