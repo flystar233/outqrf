@@ -7,7 +7,7 @@
 \method{plot}{outqrf}(x)
 }
 \arguments{
-\item{qrf}{An object of class "outqrf".}
+\item{x}{An object of class "outqrf".}
 }
 \value{
 A ggplot2 object

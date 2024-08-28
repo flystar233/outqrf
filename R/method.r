@@ -2,7 +2,7 @@
 #' @description
 #' This function can plot paired boxplot of an "outqrf" object.
 #' It helps us to better observe the relationship between the original and predicted values
-#' @param qrf An object of class "outqrf".
+#' @param x An object of class "outqrf".
 #' @returns A ggplot2 object
 #' @export
 #' @examples
