@@ -73,7 +73,8 @@ plot(qrf)
 
 ```{r Evaluation2, echo=TRUE}
 library(outqrf)
-library(tidyverse)
+library(ggplot2)
+library(dplyr)
 data <- diamonds|>select(price,carat,cut,color,clarity)
 data2 <- outqrf::generateOutliers(data, p = 0.001,seed =2024)
 # 108

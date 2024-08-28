@@ -3,15 +3,17 @@
 #' This function can plot paired boxplot of an "outqrf" object.
 #' It helps us to better observe the relationship between the original and predicted values
 #' @param x An object of class "outqrf".
+#' @param ... other param maybe uesd.
 #' @returns A ggplot2 object
 #' @export
 #' @examples
 #' irisWithOutliers <- generateOutliers(iris, seed = 2024)
 #' qrf <- outqrf(irisWithOutliers)
 #' plot(qrf)
-plot.outqrf<- function(x) {
+plot.outqrf<- function(x,...) {
     result_df <- data.frame()
     data <- x$Data
+    tag <- NULL
     for (i in seq_along(x$outMatrixs)) {
         temp_df <- as.data.frame(x$outMatrixs[[i]][,x$quantiles_type/2])
         if (nrow(result_df) == 0) {

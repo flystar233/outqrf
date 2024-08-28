@@ -53,7 +53,7 @@
       <h1>Using outqrf</h1>
                         <h4 data-toc-skip class="author">lucian xu</h4>
             
-            <h4 data-toc-skip class="date">2024-08-27</h4>
+            <h4 data-toc-skip class="date">2024-08-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/flystar233/outqrf/blob/HEAD/vignettes/outqrf.Rmd" class="external-link"><code>vignettes/outqrf.Rmd</code></a></small>
       <div class="d-none name"><code>outqrf.Rmd</code></div>
@@ -151,7 +151,8 @@ quantile value again to determine the final quantile result.</p>
 </h2>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/flystar233/outqrf" class="external-link">outqrf</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">diamonds</span><span class="op">|&gt;</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">price</span>,<span class="va">carat</span>,<span class="va">cut</span>,<span class="va">color</span>,<span class="va">clarity</span><span class="op">)</span></span>
 <span><span class="va">data2</span> <span class="op">&lt;-</span> <span class="fu">outqrf</span><span class="fu">::</span><span class="fu"><a href="../reference/generateOutliers.html">generateOutliers</a></span><span class="op">(</span><span class="va">data</span>, p <span class="op">=</span> <span class="fl">0.001</span>,seed <span class="op">=</span><span class="fl">2024</span><span class="op">)</span></span>
 <span><span class="co"># 108</span></span>

@@ -3,13 +3,11 @@ Type: Package
 Title: Find the Outlier by Quantile Random Forests
 Version: 1.0.0
 Date: 2024-08-27
-Author: Tengfei Xu
 Authors@R: 
     person(given = "Tengfei",
            family = "Xu",
            role = c("aut", "cre"),
            email = "flystar233@gmail.com")
-Maintainer: Tengfei Xu <flystar233@gmail.com>
 Description: This package provides a method to find the outlier in custom data by quantile random forests("Quantile Regression Forests", Journal of Machine Learning Research, 7(Jun), 983-999, 2006.). It directly calls the ranger function of the ranger package to perform data fitting and prediction.In outqrf, we also implement the evaluation of outlier prediction results.
 LazyData: true
 License: MIT + file LICENSE
@@ -20,6 +18,7 @@ Roxygen: list(markdown = TRUE)
 Packaged: 2024-08-22 11:06:44 UTC;
 RoxygenNote: 7.3.2
 Imports: 
+    stats,
     ranger,
     dplyr,
     missRanger,

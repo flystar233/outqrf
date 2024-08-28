@@ -4,10 +4,12 @@
 \alias{plot.outqrf}
 \title{Plots outqrf}
 \usage{
-\method{plot}{outqrf}(x)
+\method{plot}{outqrf}(x, ...)
 }
 \arguments{
 \item{x}{An object of class "outqrf".}
+
+\item{...}{other param maybe uesd.}
 }
 \value{
 A ggplot2 object
