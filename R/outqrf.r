@@ -87,7 +87,7 @@ get_right_rank <- function(response,outMatrix,median_outMatrix,rmse_){
 #' This function finds outliers in a dataset using quantile random forests.
 #'
 #' @param data a data frame
-#' @param quantiles_type '1000':seq(from = 0.001, to = 0.999, by = 0.001), '400':seq(0.0025,0.9975,0.0025)
+#' @param quantiles_type specify the type of quantile generation.Default is 1000.
 #' @param threshold a threshold for outlier detection
 #' @param verbose a boolean value indicating whether to print verbose output
 #' @param impute a boolean value indicating whether to impute missing values

@@ -53,7 +53,7 @@
       <h1>Using outqrf</h1>
                         <h4 data-toc-skip class="author">lucian xu</h4>
             
-            <h4 data-toc-skip class="date">2024-08-28</h4>
+            <h4 data-toc-skip class="date">2024-09-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/flystar233/outqrf/blob/HEAD/vignettes/outqrf.Rmd" class="external-link"><code>vignettes/outqrf.Rmd</code></a></small>
       <div class="d-none name"><code>outqrf.Rmd</code></div>
@@ -64,13 +64,14 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>outqrf is an R package used for outlier detection. Each numeric
+<p>{outqrf} is an R package used for outlier detection. Each numeric
 variable is regressed onto all other variables using a quantile random
-forest (QRF). We use ranger to perform the fitting and prediction of
-quantile regression forests (QRF). Next, we will compute the rank of the
-observed values in the predicted results’ quantiles. If the rank of the
-observed value exceeds the threshold, the observed value is considered
-an outlier.</p>
+forest <span class="citation">(<a href="#ref-Meinshausen">Meinshausen
+2006</a>)</span>. We use {ranger} package <span class="citation">(<a href="#ref-wright">Wright and Ziegler 2017</a>)</span> to perform the
+fitting and prediction of quantile regression forests. Next, we will
+compute the rank of the observed values in the predicted results’
+quantiles. If the rank of the observed value exceeds the threshold, the
+observed value is considered an outlier.</p>
 <p>Since the same predicted value might be distributed across multiple
 quantiles in the predicted quantile results, this affects our location
 finding for the observed value. Therefore, we also used a method similar
@@ -168,6 +169,22 @@ quantile value again to determine the final quantile result.</p>
 <span><span class="fu"><a href="../reference/evaluateOutliers.html">evaluateOutliers</a></span><span class="op">(</span><span class="va">data</span>,<span class="va">data2</span>,<span class="va">qrf</span><span class="op">$</span><span class="va">outliers</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     Actual  Predicted      Cover   Coverage Efficiency </span></span>
 <span><span class="co">#&gt;     108.00     369.00     103.00       0.95       0.28</span></span></code></pre></div>
+</div>
+<div class="section level2 unnumbered">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-Meinshausen" class="csl-entry">
+Meinshausen, Nicolai. 2006. <span>“Quantile Regression Forests.”</span>
+<em>J. Mach. Learn. Res.</em> 7 (17): 983–99. <a href="https://doi.org/10.5555/1248547.1248582" class="external-link">https://doi.org/10.5555/1248547.1248582</a>.
+</div>
+<div id="ref-wright" class="csl-entry">
+Wright, Marvin, and Andreas Ziegler. 2017. <span>“Ranger: A Fast
+Implementation of Random Forests for High Dimensional Data in c++ and
+r.”</span> <em>Journal of Statistical Software, Articles</em> 77 (1):
+1–17. <a href="https://doi.org/10.18637/jss.v077.i01" class="external-link">https://doi.org/10.18637/jss.v077.i01</a>.
+</div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

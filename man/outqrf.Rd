@@ -10,6 +10,7 @@ outqrf(
   threshold = 0.025,
   impute = TRUE,
   verbose = 1,
+  weight = FALSE,
   ...
 )
 }
@@ -23,6 +24,8 @@ outqrf(
 \item{impute}{a boolean value indicating whether to impute missing values}
 
 \item{verbose}{a boolean value indicating whether to print verbose output}
+
+\item{weight}{a boolean value indicating whether to use weight. if TRUE, The actual threshold will be threshold*r2.}
 
 \item{...}{additional arguments passed to the ranger function}
 }

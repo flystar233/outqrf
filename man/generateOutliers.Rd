@@ -24,5 +24,5 @@ data with some outliers.
 Adds Outliers
 }
 \examples{
-generateOutliers(iris, p = 0.05, sd_factor = 5, seed = 123)
+generateOutliers(iris, p = 0.05, sd_factor = 5)
 }

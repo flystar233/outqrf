@@ -10,7 +10,7 @@ Authors@R:
            family = "Xu",
            role = c("aut", "cre"),
            email = "flystar233@gmail.com")
-Description: Provides a method to find the outlier in custom data by quantile random forests("Quantile Regression Forests", Journal of Machine Learning Research, 7(Jun), 983-999, 2006.). It directly calls the ranger function of the ranger package to perform data fitting and prediction. We also implement the evaluation of outlier prediction results.Compared with random forest detection of outliers, this method has higher accuracy and stability.
+Description: Provides a method to find the outlier in custom data by quantile random forests method. Introduced by Meinshausen Nicolai (2006) <doi:10.5555/1248547.1248582>. It directly calls the ranger() function of the 'ranger' package to perform data fitting and prediction. We also implement the evaluation of outlier prediction results. Compared with random forest detection of outliers, this method has higher accuracy and stability on large datasets.
 LazyData: false
 License: MIT + file LICENSE
 Depends: 

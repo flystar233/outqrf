@@ -2,6 +2,7 @@
 title: "Using outqrf"
 author: "lucian xu"
 date: "`r Sys.Date()`"
+bibliography: "biblio.bib"
 link-citations: true
 vignette: >
   %\VignetteIndexEntry{Using 'outqrf'}
@@ -24,7 +25,7 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-outqrf is an R package used for outlier detection. Each numeric variable is regressed onto all other variables using a quantile random forest (QRF). We use ranger to perform the fitting and prediction of quantile regression forests (QRF). Next, we will compute the rank of the observed values in the predicted results' quantiles. If the rank of the observed value exceeds the threshold, the observed value is considered an outlier.
+{outqrf} is an R package used for outlier detection. Each numeric variable is regressed onto all other variables using a quantile random forest [@Meinshausen]. We use {ranger} package [@wright] to perform the fitting and prediction of quantile regression forests. Next, we will compute the rank of the observed values in the predicted results' quantiles. If the rank of the observed value exceeds the threshold, the observed value is considered an outlier.
 
 Since the same predicted value might be distributed across multiple quantiles in the predicted quantile results, this affects our location finding for the observed value. Therefore, we also used a method similar to the outForest package to compare the observed value with the 50% quantile value again to determine the final quantile result.
 
@@ -82,3 +83,5 @@ qrf <- outqrf(data2,num.threads=8,quantiles_type=400)
 #The process can be slow because it needs to predict the value at 400|1000 quantiles for each observation. 
 evaluateOutliers(data,data2,qrf$outliers)
 ```
+
+## References
