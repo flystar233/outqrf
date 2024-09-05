@@ -31,7 +31,7 @@ Since the same predicted value might be distributed across multiple quantiles in
 
 ## Installation
 
-```{r install, eval=FALSE, include=FALSE}
+```{r install,eval=FALSE}
 # Development version
 devtools::install_github("flystar233/outqrf")
 ```
