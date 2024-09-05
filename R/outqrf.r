@@ -87,10 +87,11 @@ get_right_rank <- function(response,outMatrix,median_outMatrix,rmse_){
 #' This function finds outliers in a dataset using quantile random forests.
 #'
 #' @param data a data frame
-#' @param quantiles_type '1000':seq(from = 0.001, to = 0.999, by = 0.001), '400':seq(0.0025,0.9975,0.0025)
+#' @param quantiles_type specify the type of quantile generation.Default is 1000.
 #' @param threshold a threshold for outlier detection
 #' @param verbose a boolean value indicating whether to print verbose output
 #' @param impute a boolean value indicating whether to impute missing values
+#' @param weight a boolean value indicating whether to use weight. if TRUE, The actual threshold will be threshold*r2.
 #' @param ... additional arguments passed to the ranger function
 #' @return
 #' An object of class "outqrf" and a list with the following elements.
@@ -119,6 +120,7 @@ outqrf <-function(data,
                   threshold =0.025,
                   impute = TRUE,
                   verbose = 1,
+                  weight = FALSE,
                   ...){
     # Initial check
     if (!is.data.frame(data)) {
@@ -191,7 +193,11 @@ outqrf <-function(data,
         rmse <- c(rmse,rmse_)
         rank_value <- get_right_rank(response,outMatrix,median_outMatrix,rmse_)
         outlier <- data.frame(row = as.numeric(row.names(data)),col = v,observed = response, predicted = median_outMatrix,rank = rank_value)
-        outlier<- outlier|>dplyr::filter(rank<=threshold_low| rank>=threshold_high)
+        if (weight){
+            outlier<- outlier|>dplyr::filter(rank<=threshold_low*qrf$r.squared| rank>=1-threshold_low*qrf$r.squared)}
+        else{
+            outlier<- outlier|>dplyr::filter(rank<=threshold_low| rank>=threshold_high)
+        }
         outliers <- rbind(outliers,outlier)
     }
     # names of the variables
