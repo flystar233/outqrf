@@ -9,33 +9,35 @@
 #' @export
 #' @examples
 #' generateOutliers(iris, p = 0.05, sd_factor = 5)
-generateOutliers <- function(data, p = 0.05, sd_factor = 5, seed = NULL){
-    if (p < 0 || p > 1|| sd_factor <= 0) {
-        stop("p and sd_factor must be between 0 and 1")
-    }
-    if (is.null(seed)) {
-        set.seed(as.numeric(Sys.time()))
-    } else {
-        set.seed(seed)
-    }
-    data<- as.data.frame(data)
-    numeric_features <- names(data)[sapply(data,is.numeric)]
-
-    max_decimal_places <- function(vec) { #/
-    # Function to find the maximum number of decimal places in a vector
-    #
-    vec_str <- as.character(vec)
-    split_vec <- strsplit(vec_str, "\\.")
-    decimal_places <- sapply(split_vec, function(x) ifelse(length(x) > 1, nchar(x[2]), 0))
-    max_decimal_places <- max(decimal_places)
-    return(max_decimal_places)
-    }
-
-    for (features in numeric_features){
-        n <- length(data[,features])
-        m <- round(p * n)
-        round_n <- max_decimal_places(data[,features])
-        data[sample(n,m),features] <- round(data[m,features] + sd_factor  * sample(c(-1, 1), m, replace = TRUE) * rnorm(m,sd(data[[features]])),round_n)
-    }
-    return(data)
+generateOutliers <- function(data, p = 0.05, sd_factor = 5, seed = NULL) {
+  if (!is.data.frame(data)) stop("data must be a data.frame")
+  if (!is.numeric(p) || p < 0 || p > 1) stop("p must be between 0 and 1")
+  if (!is.numeric(sd_factor) || sd_factor <= 0) stop("sd_factor must be > 0")
+  if (!is.null(seed)) set.seed(seed)
+  
+  data <- as.data.frame(data)
+  numeric_features <- names(data)[sapply(data, is.numeric)]
+  if (length(numeric_features) == 0) stop("No numeric features found in data")
+  
+  max_decimal_places <- function(vec) {
+    # 计算向量中最大的小数位数
+    vec <- na.omit(vec)
+    if (length(vec) == 0) return(0)
+    dec <- sub("^[^.]*\\.?([^0]*?)0*$", "\\1", as.character(vec))
+    dec[dec == as.character(vec)] <- "" # 没有小数点的
+    max(nchar(dec))
+  }
+  
+  for (feature in numeric_features) {
+    n <- nrow(data)
+    m <- max(1, round(p * n))
+    if (m == 0) next
+    idx <- sample(n, m)
+    round_n <- max_decimal_places(data[[feature]])
+    sd_val <- sd(data[[feature]], na.rm = TRUE)
+    if (is.na(sd_val) || sd_val == 0) next
+    noise <- sd_factor * sample(c(-1, 1), m, replace = TRUE) * rnorm(m, mean = 0, sd = sd_val)
+    data[idx, feature] <- round(data[idx, feature] + noise, round_n)
+  }
+  return(data)
 }
