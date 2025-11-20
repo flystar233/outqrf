@@ -4,10 +4,12 @@
 \alias{plot.outqrf}
 \title{Plots outqrf}
 \usage{
-\method{plot}{outqrf}(x, ...)
+\method{plot}{outqrf}(x, data, ...)
 }
 \arguments{
 \item{x}{An object of class "outqrf".}
+
+\item{data}{Original data frame used for outlier detection. Required.}
 
 \item{...}{other param maybe uesd.}
 }
@@ -21,5 +23,5 @@ It helps us to better observe the relationship between the original and predicte
 \examples{
 irisWithOutliers <- generateOutliers(iris, seed = 2024)
 qrf <- outqrf(irisWithOutliers)
-plot(qrf)
+plot(qrf, data = irisWithOutliers)
 }

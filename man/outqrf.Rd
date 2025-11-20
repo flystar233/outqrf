@@ -2,60 +2,44 @@
 % Please edit documentation in R/outqrf.r
 \name{outqrf}
 \alias{outqrf}
-\title{find outliers}
+\title{Outlier detection using quantile random forest}
 \usage{
 outqrf(
   data,
   quantiles_type = 1000,
-  threshold = 0.025,
+  threshold = "auto",
+  cv_folds = 5,
   impute = TRUE,
   verbose = 1,
   weight = FALSE,
+  mad_factor = NULL,
   ...
 )
 }
 \arguments{
-\item{data}{a data frame}
+\item{data}{A data frame.}
 
-\item{quantiles_type}{'1000':seq(from = 0.001, to = 0.999, by = 0.001), '400':seq(0.0025,0.9975,0.0025)}
+\item{quantiles_type}{Quantile grid type: 1000, 400, or 40. Default is 1000.}
 
-\item{threshold}{a threshold for outlier detection}
+\item{threshold}{Outlier threshold (0-1) or "auto". Default is "auto".
+Auto logic: 0.025 for n<1000, scaling down to 0.001-0.0025 for large datasets.}
 
-\item{impute}{a boolean value indicating whether to impute missing values}
+\item{cv_folds}{Number of cross-validation folds. Default is 5.}
 
-\item{verbose}{a boolean value indicating whether to print verbose output}
+\item{impute}{Whether to impute missing values. Default TRUE.}
 
-\item{weight}{a boolean value indicating whether to use weight. if TRUE, The actual threshold will be threshold*r2.}
+\item{verbose}{Verbosity level. Default 1.}
 
-\item{...}{additional arguments passed to the ranger function}
+\item{weight}{Whether to use weighted threshold. Default FALSE.}
+
+\item{mad_factor}{Magnitude filter strictness. Default is NULL (auto-calculated based on sample size).
+Typical values are 3 (loose) to 6 (strict). Auto logic: 3 for n<1000, scaling up to ~4.5 for n=50000.}
+
+\item{...}{Additional arguments passed to ranger. Recommended: num.trees = 200,threads=8.}
 }
 \value{
-An object of class "outqrf" and a list with the following elements.
-\itemize{
-\item \code{Data}: Original data set in unchanged row order
-\item \code{outliers}: Compact representation of outliers. Each row corresponds to an outlier and contains the following columns:
-\itemize{
-\item \code{row}: Row number of the outlier
-\item \code{col}: Variable name of the outlier
-\item \code{observed}: value of the outlier
-\item \code{predicted}: predicted value of the outlier
-\item \code{rank}: Rank of the outlier
-}
-\item \code{outMatrix}: Predicted value at different quantiles for each observation
-\item \code{r.squared}: R-squared value of the quantile random forest model
-\item \code{outMatrix}: Predicted value at different quantiles for each observation
-\item \code{r.squared}: R-squared value of the quantile random forest model
-\item \code{oob.error}: Out-of-bag error of the quantile random forest model
-\item \code{rmse}: RMSE of the quantile random forest model
-\item \code{threshold}: Threshold for outlier detection
-}
+An object of class "outqrf" with outlier info and model stats.
 }
 \description{
-This function finds outliers in a dataset using quantile random forests.
-}
-\examples{
-iris_with_outliers <- generateOutliers(iris, p=0.05)
-qrf = outqrf(iris_with_outliers)
-qrf$outliers
-evaluateOutliers(iris,iris_with_outliers,qrf$outliers)
+Detects outliers using Quantile Random Forests with Cross-Validation.
 }

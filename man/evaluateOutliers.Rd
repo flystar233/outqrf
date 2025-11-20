@@ -11,16 +11,16 @@ evaluateOutliers(original_data, anomaly_data, anomaly_result)
 
 \item{anomaly_data}{A data frame containing the anomaly data.}
 
-\item{anomaly_result}{A data frame containing the predicted anomalies.}
+\item{anomaly_result}{A data frame containing the predicted anomalies (columns: row, col).}
 }
 \value{
-A data frame containing the evaluation metrics.
+A named numeric vector containing the evaluation metrics.
 }
 \description{
 This function evaluates the performance of the outlier detection algorithm.
 }
 \examples{
 anomaly_data <- generateOutliers(iris, p = 0.05, sd_factor = 5, seed = 123)
-qrf<- outqrf(anomaly_data)
-evaluateOutliers(iris,anomaly_data,qrf$outliers)
+qrf <- outqrf(anomaly_data)
+evaluateOutliers(iris, anomaly_data, qrf$outliers)
 }

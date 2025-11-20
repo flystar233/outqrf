@@ -2,7 +2,5 @@
 importFrom("stats", "predict", "rnorm", "sd")
 S3method(plot,outqrf)
 export(evaluateOutliers)
-export(find_index)
 export(generateOutliers)
-export(get_quantily_value)
 export(outqrf)

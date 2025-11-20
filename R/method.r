@@ -3,26 +3,29 @@
 #' This function can plot paired boxplot of an "outqrf" object.
 #' It helps us to better observe the relationship between the original and predicted values
 #' @param x An object of class "outqrf".
+#' @param data Original data frame used for outlier detection. Required.
 #' @param ... other param maybe uesd.
 #' @returns A ggplot2 object
 #' @export
 #' @examples
 #' irisWithOutliers <- generateOutliers(iris, seed = 2024)
 #' qrf <- outqrf(irisWithOutliers)
-#' plot(qrf)
-plot.outqrf<- function(x,...) {
+#' plot(qrf, data = irisWithOutliers)
+plot.outqrf<- function(x, data, ...) {
+    if (missing(data) || is.null(data)) {
+      stop("Please provide the original data frame used for outlier detection.")
+    }
     result_df <- data.frame()
-    data <- x$Data
     tag <- NULL
-    for (i in seq_along(x$outMatrixs)) {
-        temp_df <- as.data.frame(x$outMatrixs[[i]][,x$quantiles_type/2])
+    for (i in seq_along(x$outMatrices)) {
+        temp_df <- as.data.frame(x$outMatrices[[i]][,x$quantiles_type/2])
         if (nrow(result_df) == 0) {
           result_df <- temp_df
         } else {
           result_df <- cbind(result_df, temp_df)
         }
     }
-    names(result_df) = names(x$outMatrixs)
+    names(result_df) = names(x$outMatrices)
     result_df <- dplyr::mutate(result_df,tag = "predicted")
     numeric_features <- names(data)[sapply(data,is.numeric)]
     data <- data[numeric_features]
