@@ -183,13 +183,15 @@ outqrf <- function(data,
     
     r_squared_list[v] <- current_r_sq / max(1, cv_folds)
     oob_error_list[v] <- current_oob / max(1, cv_folds)
-    outMatrices[[v]] <- outMatrix
     
     # --- Vectorized Rank Calculation ---
     rank_value <- rowMeans(outMatrix <= response_vec, na.rm = TRUE)
     
     median_idx <- ceiling(length(quantiles) / 2)
     median_pred <- outMatrix[, median_idx]
+    
+    # Store only median predictions for plotting (save memory)
+    outMatrices[[v]] <- median_pred
     diffs <- response_vec - median_pred
     rmse_val <- sqrt(mean(diffs^2, na.rm = TRUE))
     rmse_list[v] <- rmse_val
@@ -233,7 +235,8 @@ outqrf <- function(data,
     rmse = rmse_list,
     oob.error = oob_error_list,
     r.squared = r_squared_list,
-    quantiles_type = quantiles_type
+    quantiles_type = quantiles_type,
+    outMatrices = outMatrices  # Contains median predictions for plotting
   )
   class(result) <- "outqrf"
   return(result)
