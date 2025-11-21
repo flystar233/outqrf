@@ -23,25 +23,37 @@ irisWithOutliers <- generateOutliers(iris, p = 0.05,seed =2024)
 # Find outliers by quantile random forest regressions
 out <- outqrf(irisWithOutliers,quantiles_type=400)
 out$outliers
-#    row          col    observed predicted  rank
-# 1   32 Sepal.Length  14.9308229       5.4 0.999
-# 2   35 Sepal.Length  -1.8135664       4.6 0.001
-# 3   84 Sepal.Length  11.4849203       6.3 0.999
-# 4  129 Sepal.Length  -5.6021049       6.2 0.001
-# 5   49  Sepal.Width  10.7927619       3.7 0.999
-# 6   90  Sepal.Width  -0.7648333       2.4 0.001
-# 7  131  Sepal.Width  -2.1389311       2.7 0.001
-# 8  137  Sepal.Width  11.4992802       3.2 0.999
-# 9   36 Petal.Length  12.8033669       1.6 0.999
-# 10  73 Petal.Length -17.1905846       4.4 0.001
-# 11 107 Petal.Length  13.6672827       5.6 0.999
-# 12 123 Petal.Length  -8.9717894       5.1 0.001
-# 13 140 Petal.Length  13.5214560       5.7 0.999
-# 14  10  Petal.Width -11.8406790       0.2 0.001
-# 15  14  Petal.Width  -6.3030372       0.2 0.003
-# 16  34  Petal.Width   7.5843853       0.4 0.999
-# 17  66  Petal.Width   6.9828746       2.0 0.993
-# 18 113  Petal.Width  -6.0696862       1.5 0.001
+ row          col observed predicted        rank
+1   37 Sepal.Length      9.8      5.10 1.000000000
+2   45 Sepal.Length      7.4      5.10 1.000000000
+3  105 Sepal.Length      4.2      6.80 0.002506266
+4  109 Sepal.Length     -1.7      6.40 0.000000000
+5  122 Sepal.Length     13.6      6.40 1.000000000
+6  131 Sepal.Length      7.4      5.80 0.987468672
+7  145 Sepal.Length     10.4      6.70 1.000000000
+8   20  Sepal.Width      4.5      3.50 1.000000000
+9   42  Sepal.Width      2.3      3.20 0.000000000
+10  87  Sepal.Width      2.0      2.95 0.000000000
+11 106  Sepal.Width      5.6      3.00 1.000000000
+12 116  Sepal.Width      6.3      3.00 1.000000000
+13   5 Petal.Length     14.8      1.50 1.000000000
+14  49 Petal.Length     -2.4      1.50 0.000000000
+15  73 Petal.Length     -7.0      4.60 0.000000000
+16  98 Petal.Length      2.7      4.40 0.002506266
+17 108 Petal.Length     14.5      5.30 1.000000000
+18 131 Petal.Length      3.4      6.40 0.000000000
+19 134 Petal.Length     12.6      5.10 0.989974937
+20  16  Petal.Width      1.9      0.20 1.000000000
+21  27  Petal.Width      2.8      0.20 1.000000000
+22  31  Petal.Width     -9.5      0.20 0.000000000
+23  59  Petal.Width      0.8      1.50 0.000000000
+24  66  Petal.Width      6.5      1.40 1.000000000
+25 101  Petal.Width      2.5      1.80 0.989974937
+26 105  Petal.Width      3.2      1.80 1.000000000
+27 113  Petal.Width      0.9      2.10 0.000000000
+28 130  Petal.Width      1.6      2.10 0.002506266
+29 134  Petal.Width      1.5      2.00 0.017543860
+30 135  Petal.Width      1.4      2.30 0.012531328
 
 ```
 
@@ -73,7 +85,7 @@ rf <- outForest(irisWithOutliers)
 
 evaluateOutliers(iris,irisWithOutliers,qrf$outliers)
 #Actual  Predicted      Cover   Coverage Efficiency 
-# 32.00      17.00      17.00       0.53       1.00 
+# 32.00      30.00      24.00       0.75       0.8 
 evaluateOutliers(iris,irisWithOutliers,rf$outliers)
 #Actual  Predicted      Cover   Coverage Efficiency
 # 32.00      19.00      19.00       0.59       1.00 
@@ -93,7 +105,7 @@ qrf <- outqrf(data2,num.threads=8,quantiles_type=400)
 rf <- outForest(data2)
 evaluateOutliers(data,data2,qrf$outliers)
 #Actual  Predicted      Cover   Coverage Efficiency 
-#108.00     369.00     103.00       0.95       0.28 
+#108.00     336.00     103.00       0.95       0.31 
 evaluateOutliers(data,data2,rf$outliers)
 #Actual  Predicted      Cover   Coverage Efficiency 
 #108.00     687.00     104.00       0.96       0.15

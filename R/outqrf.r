@@ -233,7 +233,6 @@ outqrf <- function(data,
     rmse = rmse_list,
     oob.error = oob_error_list,
     r.squared = r_squared_list,
-    outMatrices = outMatrices,
     quantiles_type = quantiles_type
   )
   class(result) <- "outqrf"
